@@ -1,0 +1,16 @@
+{
+  "name": "eind_opdracht",
+  "version": "1.0.0",
+  "description": "",
+  "main": "farm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "testwatch": "jest --watchAll"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
