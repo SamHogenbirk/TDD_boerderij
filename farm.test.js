@@ -1,4 +1,4 @@
-const { getYieldForPlant, getYieldForCrop, getTotalYield } = require("./farm");
+const { getYieldForPlant, getYieldForCrop, getTotalYield, getCostsForCrop } = require("./farm");
 
 describe("getYieldForPlant", () => {
     const corn = {
@@ -52,3 +52,28 @@ describe("getTotalYield", () => {
         expect(getTotalYield({ crops })).toBe(0);
     });
 });
+
+describe('getCostsForCrop', () => {
+    test("Calculate total cost per crop", () => {
+        const corn = {
+            name: "corn",
+            yield: 3,
+            price: 1
+        };
+        const crops = [{ crop: corn, numCrops: 230 }];
+        expect(getCostsForCrop({ crops })).toBe(230);
+    });
+});
+
+describe('getCostsForCrop', () => {
+    test("Calculate total cost per crop", () => {
+        const corn = {
+            name: "corn",
+            yield: 3,
+            price: 1
+        };
+        const crops = [{ crop: corn, numCrops: 230 }];
+        expect(getCostsForCrop({ crops })).toBe(230);
+    });
+});
+

@@ -1,25 +1,23 @@
 let log = console.log
 
-const getYieldForPlant = (corn) => corn.yield
+const getYieldForPlant = (input) => input.yield
 
-const getYieldForCrop = (input) => input.numCrops * 3
+const getYieldForCrop = (input) => input.crop.yield * input.numCrops
 
 const getTotalYield = (input) => {
 
-    let a = input.crops[0]
-    let b = a.numCrops * a.crop.yield
+    let output = 0
+    input.crops.forEach(element => output += (element.crop.yield * element.numCrops))
+    return output
 
-    let c = input.crops[1]
-    let d = c.numCrops * c.crop.yield
-
-    const res = b + d
-
-    return res
 };
 
-const getTotalYield = (input) => {
+const getCostsForCrop = (input) => {
 
-    
+    let output = 0
+    input.crops.forEach(element => output = (element.crop.price * element.numCrops))
+    return output
+
 }
 
 
@@ -27,5 +25,6 @@ const getTotalYield = (input) => {
 module.exports = {
     getYieldForPlant,
     getYieldForCrop,
-    getTotalYield
+    getTotalYield,
+    getCostsForCrop
 }
