@@ -12,17 +12,13 @@ const getTotalYield = (input) => {
 
 };
 
-const getCostsForCrop = (input) => {
-
-    let output = 0
-    input.crops.forEach(element => output = (element.crop.price * element.numCrops))
-    return output
-
-};
+const getCostsForCrop = (input) => input.crops.crop.price * input.crops.numCrops
 
 const getRevenueForCrop = (input) => input.crops.crop.sale * input.crops.crop.yield
 
+const getProfitGorCrop = (input) => getRevenueForCrop(input) - getCostsForCrop(input)
 
+const getTotalProfit = (input) => log(input)
 
 
 module.exports = {
@@ -30,5 +26,7 @@ module.exports = {
     getYieldForCrop,
     getTotalYield,
     getCostsForCrop,
-    getRevenueForCrop
+    getRevenueForCrop,
+    getProfitGorCrop,
+    getTotalProfit
 }
