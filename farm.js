@@ -12,8 +12,13 @@ const getYieldForCrop = (input, envo) => {
 
 const getTotalYield = (input) => {
 
+    console.log(input)
+
     let output = 0
-    input.crops.forEach(item => output += (item.crop.yield * item.numCrops))
+    input.crops.forEach(item => {
+
+        item.envo != 0 ? output += ((item.crop.yield * item.numCrops) * item.envo) : output += item.crop.yield * item.numCrops
+    })
     return output
 };
 
