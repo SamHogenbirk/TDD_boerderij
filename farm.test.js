@@ -1,3 +1,5 @@
+//npm run testwatch
+
 const { getYieldForPlant,
     getYieldForCrop,
     getTotalYield,
@@ -11,10 +13,22 @@ describe("getYieldForPlant", () => {
     const corn = {
         name: "corn",
         yield: 30,
+        factors: {
+            sun: {
+                low: 0.5,
+                medium: 0,
+                high: 1.5,
+            }
+        }
+    };
+
+    const environmentFactors = {
+        sun: "low",
+
     };
 
     test("Get yield for plant with no environment factors", () => {
-        expect(getYieldForPlant(corn)).toBe(30);
+        expect(getYieldForPlant(corn, environmentFactors)).toBe(15);
     });
 });
 
@@ -28,8 +42,28 @@ describe("getYieldForCrop", () => {
         const input = {
             crop: corn,
             numCrops: 10,
+            factors: {
+
+                sun: {
+                    low: 0.5,
+                    medium: 0,
+                    high: 1.5,
+                },
+
+                wind: {
+                    low: 1.2,
+                    none: 0,
+                    high: 0.8
+                },
+            }
         };
-        expect(getYieldForCrop(input)).toBe(30);
+
+        const environmentFactors = {
+            sun: "high",
+            wind: "high"
+
+        };
+        expect(getYieldForCrop(input, environmentFactors)).toBe(36);
     });
 });
 

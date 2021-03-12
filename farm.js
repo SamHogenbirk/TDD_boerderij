@@ -1,6 +1,14 @@
-const getYieldForPlant = (input) => input.yield
+const getYieldForPlant = (input, envo) => input.yield * input.factors.sun[envo.sun]
 
-const getYieldForCrop = (input) => input.crop.yield * input.numCrops
+const getYieldForCrop = (input, envo) => {
+
+    const res = input.crop.yield *
+        input.numCrops *
+        input.factors.sun[envo.sun] *
+        input.factors.wind[envo.wind]
+    return res
+
+}
 
 const getTotalYield = (input) => {
 
