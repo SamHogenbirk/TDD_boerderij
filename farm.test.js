@@ -46,24 +46,24 @@ describe("getYieldForCrop", () => {
 
                 sun: {
                     low: 0.5,
-                    medium: 0,
+                    medium: 1,
                     high: 1.5,
                 },
 
                 wind: {
                     low: 1.2,
-                    none: 0,
+                    none: 1,
                     high: 0.8
                 },
             }
         };
 
         const environmentFactors = {
-            sun: "high",
-            wind: "high"
+            sun: "medium",
+            wind: "none"
         };
 
-        expect(getYieldForCrop(input, environmentFactors)).toBe(36);
+        expect(getYieldForCrop(input, environmentFactors)).toBe(30);
     });
 });
 
@@ -109,8 +109,20 @@ describe("getTotalYield", () => {
         const corn = {
             name: "corn",
             yield: 3,
+            factors: {
+                sun: {
+
+                    low: 0.5,
+                    medium: 0,
+                    high: 1.5,
+                }
+            }
+
         };
-        const crops = [{ crop: corn, numCrops: 0 }];
+        const environmentFactors = {
+            sun: "high",
+        };
+        const crops = [{ crop: corn, numCrops: 0, envo: corn.factors.sun[environmentFactors.sun] }];
         expect(getTotalYield({ crops })).toBe(0);
     });
 });
@@ -122,7 +134,7 @@ describe('getCostsForCrop', () => {
         yield: 3,
         price: 1
     };
-    const crops = { crop: corn, numCrops: 230 };
+    const crops = [{ crop: corn, numCrops: 230 }];
 
     test("Calculate total cost per crop", () => {
         expect(getCostsForCrop({ crops })).toBe(230);
@@ -134,9 +146,29 @@ describe('getRevenueForCrop', () => {
         name: "apple",
         yield: 150,
         price: 1,
-        sale: 2
+        sale: 2,
+        factors: {
+            sun: {
+                low: 0.5,
+                normal: 1,
+                high: 1.5,
+            },
+            worms: {
+                none: 1,
+                some: 1.2,
+                many: 1.7,
+            }
+        }
     };
-    const crops = { crop: apple };
+
+    const environmentFactors = {
+        sun: "normal",
+        worms: "none"
+    };
+
+    const crops = [{
+        crop: apple, envo: [apple.factors.sun[environmentFactors.sun], apple.factors.worms[environmentFactors.worms]]
+    }];
 
     test("calculate revenue per crop", () => {
         expect(getRevenueForCrop({ crops })).toBe(300);
@@ -148,9 +180,30 @@ describe('getProfitForCrop', () => {
         name: "potato",
         yield: 300,
         price: 1,
-        sale: 3
+        sale: 3,
+        factors: {
+            sun: {
+                low: 0.5,
+                normal: 1,
+                high: 1.5,
+            },
+            soil: {
+                bad: 0.8,
+                normal: 1,
+                high: 1.6
+            }
+        }
     };
-    const crops = { crop: potato, numCrops: 200 };
+
+    const environmentFactors = {
+        sun: "normal",
+        soil: "normal"
+    };
+
+    const crops = [{
+        crop: potato, numCrops: 200, envo: [potato.factors.sun[environmentFactors.sun], potato.factors.soil[environmentFactors.soil]]
+    }];
+
 
     test("calculate profit per crop", () => {
         expect(getProfitForCrop({ crops })).toBe(700);
@@ -162,14 +215,40 @@ describe('getTotalProfit', () => {
         name: "potato",
         yield: 700,
         price: 0.20,
-        sale: 1.20
-    };
+        sale: 1.20,
+        factors: {
+            sun: {
+                low: 0.5,
+                normal: 1,
+                high: 1.5,
+            },
+            soil: {
+                bad: 0.8,
+                normal: 1,
+                high: 1.6
+            }
+        }
+    }
     const apple = {
         name: "apple",
         yield: 200,
         price: 1,
-        sale: 1.75
-    };
+        sale: 1.75,
+        factors: {
+            sun: {
+
+                low: 0.5,
+                normal: 1,
+                high: 1.5,
+            },
+            worms: {
+
+                none: 1,
+                some: 1.2,
+                many: 1.7,
+            }
+        }
+    }
     const pumpkin = {
         name: "pumpkin",
         yield: 50,
