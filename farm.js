@@ -11,7 +11,7 @@ const getYieldForCrop = (input, envo) => {
 
     return res
 
-}
+};
 
 const getTotalYield = (input) => {
 
@@ -44,7 +44,7 @@ const getRevenueForCrop = (input) => {
         output += item.crop.sale * item.crop.yield
 
         item.envo.forEach((item) => {
-
+        
             output = item * output
         })
     });
@@ -55,13 +55,7 @@ const getRevenueForCrop = (input) => {
 
 const getProfitForCrop = (input) => getRevenueForCrop(input) - getCostsForCrop(input)
 
-const getTotalProfit = (input) => {
-
-    let output = 0
-    input.obj.forEach((crops) => output += getProfitForCrop({ crops }))
-    return output
-};
-
+const getTotalProfit = (input) => getProfitForCrop(input);
 
 module.exports = {
     getYieldForPlant,

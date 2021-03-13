@@ -32,7 +32,6 @@ describe("getYieldForPlant", () => {
     });
 });
 
-
 describe("getYieldForCrop", () => {
     test("Get yield for crop", () => {
         const corn = {
@@ -43,13 +42,11 @@ describe("getYieldForCrop", () => {
             crop: corn,
             numCrops: 10,
             factors: {
-
                 sun: {
                     low: 0.5,
                     medium: 1,
                     high: 1.5,
                 },
-
                 wind: {
                     low: 1.2,
                     none: 1,
@@ -111,7 +108,6 @@ describe("getTotalYield", () => {
             yield: 3,
             factors: {
                 sun: {
-
                     low: 0.5,
                     medium: 0,
                     high: 1.5,
@@ -149,6 +145,11 @@ describe('getRevenueForCrop', () => {
         sale: 2,
         factors: {
             sun: {
+                bad: 0.5,
+                normal: 1,
+                good: 1.5,
+            },
+            soil: {
                 low: 0.5,
                 normal: 1,
                 high: 1.5,
@@ -161,14 +162,17 @@ describe('getRevenueForCrop', () => {
         }
     };
 
-    const environmentFactors = {
+    const envoFactors = {
         sun: "normal",
-        worms: "none"
+        worms: "none",
+        soil: "normal"
     };
 
-    const crops = [{
-        crop: apple, envo: [apple.factors.sun[environmentFactors.sun], apple.factors.worms[environmentFactors.worms]]
-    }];
+    const crops = [
+
+        { crop: apple, envo: [apple.factors.sun[envoFactors.sun], apple.factors.worms[envoFactors.worms], apple.factors.soil[envoFactors.soil]] }
+
+    ];
 
     test("calculate revenue per crop", () => {
         expect(getRevenueForCrop({ crops })).toBe(300);
@@ -204,7 +208,6 @@ describe('getProfitForCrop', () => {
         crop: potato, numCrops: 200, envo: [potato.factors.sun[environmentFactors.sun], potato.factors.soil[environmentFactors.soil]]
     }];
 
-
     test("calculate profit per crop", () => {
         expect(getProfitForCrop({ crops })).toBe(700);
     });
@@ -236,13 +239,11 @@ describe('getTotalProfit', () => {
         sale: 1.75,
         factors: {
             sun: {
-
                 low: 0.5,
                 normal: 1,
                 high: 1.5,
             },
             worms: {
-
                 none: 1,
                 some: 1.2,
                 many: 1.7,
@@ -253,22 +254,50 @@ describe('getTotalProfit', () => {
         name: "pumpkin",
         yield: 50,
         price: 1.20,
-        sale: 1
-    };
+        sale: 1,
+        factors: {
+            soil: {
+                bad: 0.5,
+                normal: 1,
+                good: 1.5,
+            }
+        }
+    }
     const corn = {
         name: "corn",
         yield: 800,
         price: 0.85,
-        sale: 0.85
+        sale: 0.85,
+        factors: {
+            sun: {
+                low: 0.5,
+                normal: 1,
+                high: 1.5,
+            },
+            wind: {
+                low: 1.2,
+                none: 1,
+                high: 0.8
+            }
+        }
     };
-    const obj = [
-        { crop: potato, numCrops: 100 },
-        { crop: apple, numCrops: 50 },
-        { crop: pumpkin, numCrops: 30 },
-        { crop: corn, numCrops: 100 },
+
+    const envoFactors = {
+        sun: "normal",
+        worms: "none",
+        soil: "normal",
+        wind: "none"
+    };
+
+    const crops = [
+        { crop: potato, numCrops: 100, envo: [potato.factors.sun[envoFactors.sun], potato.factors.soil[envoFactors.soil]] },
+        { crop: apple, numCrops: 50, envo: [apple.factors.sun[envoFactors.sun], apple.factors.worms[envoFactors.worms]] },
+        { crop: pumpkin, numCrops: 30, envo: [pumpkin.factors.soil[envoFactors.soil]] },
+        { crop: corn, numCrops: 100, envo: [corn.factors.sun[envoFactors.sun], corn.factors.wind[envoFactors.wind]] },
     ];
 
     test("calculate total profit for multiple crops", () => {
-        expect(getTotalProfit({ obj })).toBe(1729);
+        expect(getTotalProfit({ crops })).toBe(1729);
     });
 });
+
