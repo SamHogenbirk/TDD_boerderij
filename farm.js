@@ -2,16 +2,7 @@ const log = console.log
 
 const getYieldForPlant = (input, envo) => input.yield * input.factors.sun[envo.sun]
 
-const getYieldForCrop = (input, envo) => {
-
-    const res = input.crop.yield *
-        input.numCrops *
-        input.factors.sun[envo.sun] *
-        input.factors.wind[envo.wind]
-
-    return res
-
-};
+const getYieldForCrop = (input, envo) => envo != 0 ? ((input.yield * input.numCrops) - (input.yield * input.numCrops) * ((-input.factors.sun[envo.sun] / 100))) : input.crop.yield * input.numCrops
 
 const getTotalYield = (input) => {
 
@@ -44,7 +35,7 @@ const getRevenueForCrop = (input) => {
         output += item.crop.sale * item.crop.yield
 
         item.envo.forEach((item) => {
-        
+
             output = item * output
         })
     });
