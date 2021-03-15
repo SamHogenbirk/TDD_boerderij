@@ -1,4 +1,3 @@
-//npm run testwatch
 
 const { getYieldForPlant,
     getYieldForCrop,
@@ -9,57 +8,52 @@ const { getYieldForPlant,
     getTotalProfit }
     = require("./farm");
 
+
 describe("getYieldForPlant", () => {
     const corn = {
         name: "corn",
         yield: 30,
         factors: {
             sun: {
-                low: 0.5,
+                low: -50,
                 medium: 0,
-                high: 1.5,
+                high: 50,
             }
         }
     };
-
-    const environmentFactors = {
-        sun: "low",
-
+    const envoFactors = {
+        sun: "medium",
     };
-
     test("Get yield for plant with no environment factors", () => {
-        expect(getYieldForPlant(corn, environmentFactors)).toBe(15);
+        expect(getYieldForPlant(corn, envoFactors)).toBe(30);
     });
 });
 
 describe("getYieldForCrop", () => {
     test("Get yield for crop", () => {
-
         const corn = {
             crop: "corn",
             yield: 3,
             numCrops: 10,
             factors: {
                 sun: {
-                    low: -50,
-                    medium: 0,
-                    high: 50,
+                    low: 0.5,
+                    medium: 1,
+                    high: 1.5,
                 },
                 wind: {
-                    low: 0,
-                    none: 50,
-                    high: -50
+                    low: 0.9,
+                    none: 1,
+                    high: 0.5
                 },
             }
-        };
-
+        }
         const envoFactors = {
             sun: "medium",
-            wind: "low"
-        };
-
+            wind: "none"
+        }
         expect(getYieldForCrop(corn, envoFactors)).toBe(30);
-    });
+    })
 });
 
 describe("getTotalYield", () => {
@@ -74,7 +68,7 @@ describe("getTotalYield", () => {
                     high: 1.5,
                 }
             }
-        };
+        }
         const pumpkin = {
             name: "pumpkin",
             yield: 4,
@@ -85,18 +79,15 @@ describe("getTotalYield", () => {
                     good: 1.5,
                 }
             }
-        };
-
+        }
         const environmentFactors = {
             sun: "medium",
             soil: "normal"
-        };
+        }
         const crops = [
             { crop: corn, numCrops: 5, envo: corn.factors.sun[environmentFactors.sun] },
             { crop: pumpkin, numCrops: 2, envo: pumpkin.factors.soil[environmentFactors.soil] },
-        ];
-
-
+        ]
         expect(getTotalYield({ crops })).toBe(23);
     });
 
@@ -122,17 +113,16 @@ describe("getTotalYield", () => {
 });
 
 describe('getCostsForCrop', () => {
-
     const corn = {
         name: "corn",
         yield: 3,
         price: 1
-    };
-    const crops = [{ crop: corn, numCrops: 230 }];
+    }
+    const crops = [{ crop: corn, numCrops: 230 }]
 
     test("Calculate total cost per crop", () => {
         expect(getCostsForCrop({ crops })).toBe(230);
-    });
+    })
 });
 
 describe('getRevenueForCrop', () => {
@@ -143,38 +133,33 @@ describe('getRevenueForCrop', () => {
         sale: 2,
         factors: {
             sun: {
-                bad: 0.5,
-                normal: 1,
-                good: 1.5,
-            },
-            soil: {
-                low: 0.5,
+                low: 0.6,
                 normal: 1,
                 high: 1.5,
             },
+            soil: {
+                bad: 0.4,
+                normal: 1,
+                good: 1.5,
+            },
             worms: {
                 none: 1,
-                some: 1.2,
-                many: 1.7,
+                some: 0.7,
+                many: 0.3,
             }
         }
-    };
-
+    }
     const envoFactors = {
         sun: "normal",
-        worms: "none",
-        soil: "normal"
-    };
-
+        soil: "normal",
+        worms: "none"
+    }
     const crops = [
-
         { crop: apple, envo: [apple.factors.sun[envoFactors.sun], apple.factors.worms[envoFactors.worms], apple.factors.soil[envoFactors.soil]] }
-
-    ];
-
+    ]
     test("calculate revenue per crop", () => {
         expect(getRevenueForCrop({ crops })).toBe(300);
-    });
+    })
 });
 
 describe('getProfitForCrop', () => {
@@ -192,23 +177,20 @@ describe('getProfitForCrop', () => {
             soil: {
                 bad: 0.8,
                 normal: 1,
-                high: 1.6
+                good: 1.6
             }
         }
-    };
-
+    }
     const environmentFactors = {
         sun: "normal",
         soil: "normal"
-    };
-
+    }
     const crops = [{
         crop: potato, numCrops: 200, envo: [potato.factors.sun[environmentFactors.sun], potato.factors.soil[environmentFactors.soil]]
-    }];
-
+    }]
     test("calculate profit per crop", () => {
         expect(getProfitForCrop({ crops })).toBe(700);
-    });
+    })
 });
 
 describe('getTotalProfit', () => {
@@ -226,7 +208,7 @@ describe('getTotalProfit', () => {
             soil: {
                 bad: 0.8,
                 normal: 1,
-                high: 1.6
+                good: 1.6
             }
         }
     }
@@ -243,8 +225,13 @@ describe('getTotalProfit', () => {
             },
             worms: {
                 none: 1,
-                some: 1.2,
-                many: 1.7,
+                some: 0.7,
+                many: 0.3,
+            },
+            wind: {
+                low: 1.2,
+                none: 1,
+                high: 0.8
             }
         }
     }
@@ -273,29 +260,25 @@ describe('getTotalProfit', () => {
                 high: 1.5,
             },
             wind: {
-                low: 1.2,
+                low: 0.9,
                 none: 1,
                 high: 0.8
             }
         }
-    };
-
+    }
     const envoFactors = {
         sun: "normal",
         worms: "none",
         soil: "normal",
         wind: "none"
-    };
-
+    }
     const crops = [
         { crop: potato, numCrops: 100, envo: [potato.factors.sun[envoFactors.sun], potato.factors.soil[envoFactors.soil]] },
-        { crop: apple, numCrops: 50, envo: [apple.factors.sun[envoFactors.sun], apple.factors.worms[envoFactors.worms]] },
+        { crop: apple, numCrops: 50, envo: [apple.factors.sun[envoFactors.sun], apple.factors.worms[envoFactors.worms], apple.factors.wind[envoFactors.wind]] },
         { crop: pumpkin, numCrops: 30, envo: [pumpkin.factors.soil[envoFactors.soil]] },
         { crop: corn, numCrops: 100, envo: [corn.factors.sun[envoFactors.sun], corn.factors.wind[envoFactors.wind]] },
-    ];
-
+    ]
     test("calculate total profit for multiple crops", () => {
         expect(getTotalProfit({ crops })).toBe(1729);
-    });
+    })
 });
-

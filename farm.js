@@ -1,17 +1,16 @@
-const log = console.log
+/*DEMO MODEL: using the provided integers to calculate te percentage, checking for "0" also. 
+In the following tests I made a little change to the input; Making the code shorter, simpler(to read), and faster(to test)*/
+const getYieldForPlant = (input, envo) => input.factors.sun[envo.sun] != 0 ? (input.yield - input.yield * ((-input.factors.sun[envo.sun] / 100))) : input.yield
 
-const getYieldForPlant = (input, envo) => input.yield * input.factors.sun[envo.sun]
-
-const getYieldForCrop = (input, envo) => envo != 0 ? ((input.yield * input.numCrops) - (input.yield * input.numCrops) * ((-input.factors.sun[envo.sun] / 100))) : input.crop.yield * input.numCrops
+const getYieldForCrop = (input, envo) => input.yield * input.numCrops * input.factors.sun[envo.sun] * input.factors.wind[envo.wind]
 
 const getTotalYield = (input) => {
 
     let output = 0
     input.crops.forEach(item => {
 
-        item.envo != 0 ? output += ((item.crop.yield * item.numCrops) * item.envo) : output += item.crop.yield * item.numCrops
+        output += ((item.crop.yield * item.numCrops) * item.envo)
     })
-
     return output
 };
 
@@ -23,26 +22,29 @@ const getCostsForCrop = (input) => {
         output += item.crop.price * item.numCrops
 
     });
-
     return output
 };
 
+/*Calculate revenue using array's, this would take any number of crops and enviromental factors. 
+Therefor also is able to calculate the final test (one function to rule them all*/
 const getRevenueForCrop = (input) => {
 
     let output = 0
     input.crops.forEach((item) => {
 
-        output += item.crop.sale * item.crop.yield
+        // Temporarely store the crop for loop, reset after each iteration
+        let tempResult = 0
+        tempResult += item.crop.sale * item.crop.yield
 
         item.envo.forEach((item) => {
 
-            output = item * output
+            tempResult = item * tempResult
+            output += tempResult
+            tempResult = 0
         })
-    });
-
+    })
     return output
-
-}
+};
 
 const getProfitForCrop = (input) => getRevenueForCrop(input) - getCostsForCrop(input)
 
