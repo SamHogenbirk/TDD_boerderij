@@ -1,5 +1,5 @@
 /*DEMO MODEL: using the provided integers to calculate te percentage, checking for "0" also. 
-In the following tests I made a little change to the input; Making the code shorter, simpler(to read), and faster(to test)*/
+In the rest of the jest I made a little change to the input (same structure diffrent values); Making the code a bit shorter and simpeler. (in my opninion) */
 const getYieldForPlant = (input, envo) => input.factors.sun[envo.sun] != 0 ? (input.yield - input.yield * ((-input.factors.sun[envo.sun] / 100))) : input.yield
 
 const getYieldForCrop = (input, envo) => input.yield * input.numCrops * input.factors.sun[envo.sun] * input.factors.wind[envo.wind]
@@ -25,14 +25,12 @@ const getCostsForCrop = (input) => {
     return output
 };
 
-/*Calculate revenue using array's, this would take any number of crops and enviromental factors. 
-Therefor also is able to calculate the final test (one function to rule them all*/
 const getRevenueForCrop = (input) => {
 
     let output = 0
     input.crops.forEach((item) => {
 
-        // Temporarely store the crop for loop, reset after each iteration
+        // Temporarely store the crop for loop sake, reset after each iteration
         let tempResult = 0
         tempResult += item.crop.sale * item.crop.yield
 
